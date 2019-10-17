@@ -1,0 +1,16 @@
+*.pyc
+tags
+tbb/
+src/
+results/
+.idea/
+.project
+.pydevproject
+__pycache__
+*.un~
+.vagrant/
+playbook.retry
+*.swp
+/tor-browser_en-US/
+/*.json
+*~

@@ -1,0 +1,8 @@
+# lines beginning with pound are ignored (like python)
+# this can be used for documentation
+
+https://en.wikipedia.org/wiki/Maluku_(province)
+https://en.wikipedia.org/wiki/Michael_Hordern
+https://en.wikipedia.org/wiki/Abd_al_Malik_(rapper)
+https://en.wikipedia.org/wiki/Aaron_Ripkowski
+
