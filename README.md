@@ -2,8 +2,7 @@ tor-browser-crawler-video
 ===============
 ![DISCLAIMER](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Dialog-warning-orange.svg/40px-Dialog-warning-orange.svg.png "experimental")  **experimental - PLEASE BE CAREFUL. Intended for reasearch purposes.**
 
-This is a fork of the [tor-browser-crawler](https://github.com/webfp/tor-browser-crawler).
-The project has been revised such that instead of capturing webpage loads, this crawler captures video loads.
+This is a fork of the [tor-browser-crawler](https://github.com/webfp/tor-browser-crawler), updated to run correctly with updated libraries and TBB version.
 
 ## Usage
 
@@ -21,9 +20,9 @@ As such, this section will focus on the docker container setup.
     * install the ``make`` utility if it is not native on your system
     * run ``make build`` to compile the docker image
 3. Setup your crawl configuration files
-    * replace ``videos.txt`` with your list of youtube urls
+    * replace ``sites.txt`` with the list of websites you wish to crawl
     * edit ``Makefile`` to use the correct network interface
-    * if you are crawling long videos, adjust the ``--timeout`` value in the ``Makefile``
+    * adjust the ``--timeout`` value in the ``Makefile`` to higher values if needed
     * make any desired changes to ``config.ini`` 
 4. Start the crawl
     * run ``make run`` to launch a container
@@ -36,6 +35,5 @@ As such, this section will focus on the docker container setup.
     * to use the latest TBB version, remove the version number from the ``dockerfile``
     * newer versions of TBB may however require different version of selenium and geckodriver
 
-* PCAP Size Limit
-    * the crawler is configured to capture up to ~120MB per video
-    * if this limit is inadequate, adjust ``MAX_DUMP_SIZE`` in the ``common.py`` source file
+* Crawler has been modified to use the ``tcpdump`` utiltity in place of ``dumpcap`` to capture traffic.
+    * This avoids runtime issues that exist when using ``dumpcap`` on some system configurations.
