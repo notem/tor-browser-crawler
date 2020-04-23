@@ -213,7 +213,7 @@ class TorBrowserWrapper(object):
     @contextmanager
     def launch(self):
         caps = DesiredCapabilities().FIREFOX
-        caps['pageLoadStrategy'] = 'eager'
+        #caps['pageLoadStrategy'] = 'eager'
         self.driver = TorBrowserDriver(*self.args, capabilities=caps, **self.kwargs)
         yield self.driver
         self.driver.quit()
