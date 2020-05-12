@@ -42,12 +42,14 @@ class Sniffer(object):
             self.set_capture_filter(pcap_filter)
         if pcap_path:
             self.set_pcap_path(pcap_path)
-        prefix = ""
-        #command = '{}dumpcap -P -a duration:{} -a filesize:{} -i {} -s 0 -f \'{}\' -w {}'\
-        #    .format(prefix, cm.HARD_VISIT_TIMEOUT, cm.MAX_DUMP_SIZE, self.device,
-        #            self.pcap_filter, self.pcap_file)
-        command = '{}tcpdump -G {} -i {} -w {} \'{}\''\
-                .format(prefix, cm.HARD_VISIT_TIMEOUT, self.device, self.pcap_file, self.pcap_filter)
+        prefix = "LD_LIBRARY_PATH=\"\" "  # fix capture util crashing
+        command = '{}dumpcap -P -a duration:{} -a filesize:{} -i {} -s 0 -f \'{}\' -w {}'\
+            .format(prefix, cm.HARD_VISIT_TIMEOUT, cm.MAX_DUMP_SIZE, self.device,
+                    self.pcap_filter, self.pcap_file)
+        #command = '{}tcpdump -G {} -i {} -w {} \'{}\''\
+        #        .format(prefix, cm.HARD_VISIT_TIMEOUT, self.device, self.pcap_file, self.pcap_filter)
+        #command = '{}tshark -i {} -w {} -f \'{}\' '\
+        #        .format(prefix, self.device, self.pcap_file, self.pcap_filter)
         wl_log.info(command)
         if dumpcap_log:
             log_fi = open(dumpcap_log, "w+")
@@ -63,16 +65,17 @@ class Sniffer(object):
         if timeout < 0:
             raise DumpcapTimeoutError()
         else:
-            wl_log.debug("tcpdump started in %s seconds" %
+            wl_log.debug("capture started in %s seconds" %
                          (DUMPCAP_START_TIMEOUT - timeout))
 
         self.is_recording = True
 
     def is_dumpcap_running(self):
-        if "tcpdump" in psutil.Process(self.p0.pid).cmdline():
+        procname = "dumpcap"
+        if procname in psutil.Process(self.p0.pid).cmdline():
             return self.p0.returncode is None
         for proc in ut.gen_all_children_procs(self.p0.pid):
-            if "tcpdump" in proc.cmdline():
+            if procname in proc.cmdline():
                 return True
         return False
 
@@ -82,12 +85,12 @@ class Sniffer(object):
         self.p0.kill()
         self.is_recording = False
         if os.path.isfile(self.pcap_file):
-            wl_log.info('Tcpdump killed. Capture size: %s Bytes %s' %
+            wl_log.info('Capture killed. Traffic size: %s Bytes %s' %
                         (os.path.getsize(self.pcap_file), self.pcap_file))
         else:
-            wl_log.warning('Tcpdump killed but cannot find capture file: %s'
+            wl_log.warning('Capture killed but cannot find capture file: %s'
                            % self.pcap_file)
-            wl_log.warning('Check %s for tcpdump error information!'
+            wl_log.warning('Check %s for error information!'
                            % self.log)
 
     def __enter__(self):

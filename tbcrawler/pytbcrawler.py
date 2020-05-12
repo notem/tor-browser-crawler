@@ -181,7 +181,8 @@ def parse_arguments():
     del args.output
 
     # Change video load timeout
-    cm.HARD_VISIT_TIMEOUT = args.timeout*60
+    cm.HARD_VISIT_TIMEOUT = (args.timeout+1)*60
+    cm.SOFT_VISIT_TIMEOUT = args.timeout*60
     del args.timeout
 
     wl_log.debug("Command line parameters: %s" % argv)
@@ -213,7 +214,7 @@ class TorBrowserWrapper(object):
     @contextmanager
     def launch(self):
         caps = DesiredCapabilities().FIREFOX
-        #caps['pageLoadStrategy'] = 'eager'
+        caps['pageLoadStrategy'] = 'normal'
         self.driver = TorBrowserDriver(*self.args, capabilities=caps, **self.kwargs)
         yield self.driver
         self.driver.quit()

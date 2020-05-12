@@ -15,8 +15,8 @@ STREAM_CLOSE_TIMEOUT = 20  # wait 20 seconds before raising an alarm signal
 # otherwise we had many cases where get_streams hanged
 
 # timeouts
-SOFT_VISIT_TIMEOUT = 120     # timeout used by selenium when attempting to load the page (before loading video)
-HARD_VISIT_TIMEOUT = 60*20   # hard timeout used by process and dumpcap to terminate irregardless of video load status
+SOFT_VISIT_TIMEOUT = 60*2     # timeout used by selenium
+HARD_VISIT_TIMEOUT = 60*3     # hard timeout used by process
 
 # write youtube player status and take screenshots every so often
 SCREENSHOT_INTERVAL = 30.      # in seconds

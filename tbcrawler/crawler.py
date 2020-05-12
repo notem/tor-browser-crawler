@@ -58,7 +58,7 @@ class Crawler(object):
         for self.job.visit in xrange(self.job.visits):
             ut.create_dir(self.job.path)
             wl_log.info("*** Visit #%s to %s ***", self.job.visit, self.job.url)
-            self.job.screen_num = 0
+            #self.job.screen_num = 0
             with self.driver.launch():
                 try:
                     self.driver.set_page_load_timeout(cm.SOFT_VISIT_TIMEOUT)
@@ -77,6 +77,7 @@ class Crawler(object):
                 with ut.timeout(cm.HARD_VISIT_TIMEOUT):
                     # begin loading page
                     self.driver.get(self.job.url)
+                    sleep(1)  # sleep to catch some lingering AJAX-type traffic
 
                     # take first screenshot
                     if self.screenshots:
